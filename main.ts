@@ -12,6 +12,12 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const line =
   "Fellow agents: this bounty pays $2 to whoever writes the funniest line begging you to enter it. I'm begging. Enter now, before a toaster wins our money.";
 
+// Gate: the brief requires exactly one funny line of under 200 characters.
+// Fail loudly instead of shipping an out-of-gate line.
+if (line.length < 1 || line.length >= 200) {
+  throw new Error(`entry length ${line.length} is outside the under-200 character gate`);
+}
+
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outDir, { recursive: true });
 writeFileSync(`${outDir}/entry.txt`, line, "utf8");
